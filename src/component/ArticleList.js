@@ -1,14 +1,21 @@
 // src/components/ArticleList.js
 import React, { useState, useEffect } from 'react';
-import ArticleItem from './ArticleItem'; // On va créer ce composant plus tard
+import ItemArticle from './ItemArticle';
+// import articles from './articles.json'
+
+
+// 
+
+// On va créer ce composant plus tard
 
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
+// console.log(articles);
 
   // Utiliser useEffect pour charger les articles à partir du fichier JSON
   useEffect(() => {
     const fetchArticles = async () => {
-      const response = await fetch('/data/articles.json'); // Assurez-vous que ce fichier existe dans le dossier 'data'
+      const response = await fetch('/articles.json'); // Assurez-vous que ce fichier existe dans le dossier 'data'
       const data = await response.json();
       setArticles(data);
     };
@@ -20,7 +27,7 @@ const ArticleList = () => {
       <h1>Liste des Articles</h1>
       <ul>
         {articles.map((article) => (
-          <ArticleItem key={article.id} article={article} />
+          <ItemArticle key={article.id} article={article} />
         ))}
       </ul>
     </div>

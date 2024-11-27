@@ -1,6 +1,6 @@
 
 import React from 'react';
-import ArticleList from './ArticleList';
+import ArticleList from './component/ArticleList.js';
 
 const App = () => {
   return (
