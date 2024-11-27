@@ -14,13 +14,28 @@ const ArticleList = () => {
 
   // Utiliser useEffect pour charger les articles à partir du fichier JSON
   useEffect(() => {
-    const fetchArticles = async () => {
-      const response = await fetch('/articles.json'); // Assurez-vous que ce fichier existe dans le dossier 'data'
-      const data = await response.json();
-      setArticles(data);
-    };
-    fetchArticles();
-  }, []); // Le tableau vide [] signifie que ce hook s'exécute une seule fois, au montage du composant.
+
+  // Fonction pour charger les articles
+  const fetchArticles = () => {
+    fetch('/data/articles.json') // Charge les articles depuis le fichier JSON
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs HTTP
+        }
+        return response.json(); // Convertit la réponse en JSON
+      })
+      .then((data) => {
+        setArticles(data); // Met à jour l'état avec les articles
+      })
+      .catch((error) => {
+        console.error('Erreur lors du chargement des articles:', error); // Affiche les erreurs dans la console
+      });
+  };
+
+  fetchArticles(); // Appelle la fonction pour charger les articles
+}, []);
+
+
 
   return (
     <div>
