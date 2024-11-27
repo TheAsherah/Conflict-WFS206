@@ -3,39 +3,52 @@ import React, { useState, useEffect } from 'react';
 import ItemArticle from './ItemArticle';
 // import articles from './articles.json'
 
-
-// 
-
-// On va créer ce composant plus tard
-
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
-// console.log(articles);
+  const [sortOrder, setSortOrder] = useState('desc'); // "desc" for descending, "asc" for ascending
 
-  // Utiliser useEffect pour charger les articles à partir du fichier JSON
-  useEffect(() => {
-
-  // Fonction pour charger les articles
+  // Function to load articles
   const fetchArticles = () => {
-    fetch('/data/articles.json') // Charge les articles depuis le fichier JSON
+    fetch('/data/articles.json') // Load articles from the JSON file
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Erreur HTTP : ${response.status}`); // Gérer les erreurs HTTP
+          throw new Error(`HTTP error: ${response.status}`); // Handle HTTP errors
         }
-        return response.json(); // Convertit la réponse en JSON
+        return response.json(); // Convert the response to JSON
       })
       .then((data) => {
-        setArticles(data); // Met à jour l'état avec les articles
+        setArticles(data); // Update state with articles
       })
       .catch((error) => {
-        console.error('Erreur lors du chargement des articles:', error); // Affiche les erreurs dans la console
+        console.error('Error loading articles:', error); // Log any errors
       });
   };
 
-  fetchArticles(); // Appelle la fonction pour charger les articles
-}, []);
+  useEffect(() => {
+    fetchArticles(); // Call the function to load articles on component mount
+  }, []);
 
+  // Function to sort articles by date
+  const sortArticles = () => {
+    const sorted = [...articles].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
 
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+
+    setArticles(sorted); // Update articles with sorted data
+  };
+
+  // Toggle the sorting order between ascending and descending
+  const toggleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+  };
+
+  // Re-sort articles whenever the sort order changes
+  useEffect(() => {
+    sortArticles();
+  }, [sortOrder]);
 
   return (
     <div>
@@ -45,6 +58,9 @@ const ArticleList = () => {
           <ItemArticle key={article.id} article={article} />
         ))}
       </ul>
+      <button onClick={toggleSortOrder}>
+        Trier par date ({sortOrder === 'asc' ? 'Croissant' : 'Décroissant'})
+      </button>
     </div>
   );
 };
