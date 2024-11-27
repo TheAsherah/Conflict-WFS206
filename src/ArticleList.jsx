@@ -27,6 +27,15 @@ const ArticleList = () => {
   fetchArticles(); // Appelle la fonction pour charger les articles
 }, []);
 
+  // Fonction pour gérer le clic sur "Lire la suite"
+  const toggleArticleExpansion = (articleId) => {
+    setExpandedArticles((prevState) => ({
+      ...prevState,
+      [articleId]: !prevState[articleId], // Inverse l'état actuel (afficher ou masquer)
+    }));
+  };
+
+
 
   return (
     <div>
@@ -35,6 +44,10 @@ const ArticleList = () => {
         {articles.map((article) => (
           <ArticleItem key={article.id} article={article} />
         ))}
+        <button onClick={() => toggleArticleExpansion(article.id)}>
+              {expandedArticles[article.id] ? 'Lire moins' : 'Lire la suite'}
+        </button>
+
       </ul>
     </div>
   );
