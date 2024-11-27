@@ -6,6 +6,15 @@ function ArticleItem({article}) {
     const handleLike = () => {
       setLikes(likes + 1);
     };
+
+    // Fonction pour gérer le clic sur "Lire la suite"
+  const toggleArticleExpansion = (articleId) => {
+    setExpandedArticles((prevState) => ({
+      ...prevState,
+      [articleId]: !prevState[articleId], // Inverse l'état actuel (afficher ou masquer)
+    }));
+  };
+
     
   return (
     <div>
