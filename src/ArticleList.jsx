@@ -4,6 +4,8 @@ import ArticleItem from './ArticleItem'; // On va créer ce composant plus tard
 
 const ArticleList = () => {
   const [articles, setArticles] = useState([]);
+  const [sortOrder, setSortOrder] = useState('desc'); // "desc" pour décroissant, "asc" pour croissant
+
 
   // Utiliser useEffect pour charger les articles à partir du fichier JSON
   useEffect(() => {
@@ -26,6 +28,23 @@ const ArticleList = () => {
 
   fetchArticles(); // Appelle la fonction pour charger les articles
 }, []);
+  const sortArticles = () => {
+  const sorted = [...articles].sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+
+    return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+  });
+
+  setArticles(sorted);
+};
+const toggleSortOrder = () => {
+  setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
+};
+useEffect(() => {
+  sortArticles();
+}, [sortOrder]);
+
 
 
   return (
@@ -36,6 +55,10 @@ const ArticleList = () => {
           <ArticleItem key={article.id} article={article} />
         ))}
       </ul>
+      <button onClick={toggleSortOrder}>
+  Trier par date ({sortOrder === 'asc' ? 'Croissant' : 'Décroissant'})
+</button>
+
     </div>
   );
 };
