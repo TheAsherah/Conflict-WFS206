@@ -1,68 +1,57 @@
-// src/components/ArticleList.js
-import React, { useState, useEffect } from 'react';
-import ItemArticle from './ItemArticle';
-// import articles from './articles.json'
+import React, { useState } from 'react';
+import './CommentForm.css'; // Assurez-vous d'ajouter un fichier CSS si nécessaire
 
-const ArticleList = () => {
-  const [articles, setArticles] = useState([]);
-  const [sortOrder, setSortOrder] = useState('desc'); // "desc" for descending, "asc" for ascending
+const CommentForm = () => {
+  const [name, setName] = useState('');
+  const [comment, setComment] = useState('');
+  const [errors, setErrors] = useState({});
 
-  // Function to load articles
-  const fetchArticles = () => {
-    fetch('/data/articles.json') // Load articles from the JSON file
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error: ${response.status}`); // Handle HTTP errors
-        }
-        return response.json(); // Convert the response to JSON
-      })
-      .then((data) => {
-        setArticles(data); // Update state with articles
-      })
-      .catch((error) => {
-        console.error('Error loading articles:', error); // Log any errors
-      });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let validationErrors = {};
+    
+    if (!name.trim()) validationErrors.name = "Le nom est obligatoire.";
+    if (!comment.trim()) validationErrors.comment = "Le commentaire est obligatoire.";
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
+    // Logique pour envoyer le commentaire
+    console.log("Nom:", name, "Commentaire:", comment);
+    setErrors({});
+    setName('');
+    setComment('');
   };
-
-  useEffect(() => {
-    fetchArticles(); // Call the function to load articles on component mount
-  }, []);
-
-  // Function to sort articles by date
-  const sortArticles = () => {
-    const sorted = [...articles].sort((a, b) => {
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-
-      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-
-    setArticles(sorted); // Update articles with sorted data
-  };
-
-  // Toggle the sorting order between ascending and descending
-  const toggleSortOrder = () => {
-    setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
-  };
-
-  // Re-sort articles whenever the sort order changes
-  useEffect(() => {
-    sortArticles();
-  }, [sortOrder]);
 
   return (
-    <div>
-      <h1>Liste des Articles</h1>
-      <ul>
-        {articles.map((article) => (
-          <ItemArticle key={article.id} article={article} />
-        ))}
-      </ul>
-      <button onClick={toggleSortOrder}>
-        Trier par date ({sortOrder === 'asc' ? 'Croissant' : 'Décroissant'})
-      </button>
-    </div>
+    <form className="comment-form" onSubmit={handleSubmit}>
+      <h2>Laisser un commentaire</h2>
+      <div className="form-group">
+        <label htmlFor="name">Nom :</label>
+        <input 
+          type="text" 
+          id="name" 
+          value={name} 
+          onChange={(e) => setName(e.target.value)} 
+          placeholder="Entrez votre nom"
+        />
+        {errors.name && <p className="error">{errors.name}</p>}
+      </div>
+      <div className="form-group">
+        <label htmlFor="comment">Commentaire :</label>
+        <textarea 
+          id="comment" 
+          value={comment} 
+          onChange={(e) => setComment(e.target.value)} 
+          placeholder="Entrez votre commentaire"
+        />
+        {errors.comment && <p className="error">{errors.comment}</p>}
+      </div>
+      <button type="submit" className="submit-btn">Soumettre</button>
+    </form>
   );
 };
 
-export default ArticleList;
+export default CommentForm;
