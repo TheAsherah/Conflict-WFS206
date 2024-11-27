@@ -14,6 +14,11 @@ function ArticleItem({article}) {
         <h4>{article.date}</h4>
         <p>{article.likes}</p>
         <p>Likes : {likes}</p>
+
+        <button onClick={() => toggleArticleExpansion(article.id)}>
+              {expandedArticles[article.id] ? 'Lire moins' : 'Lire la suite'}
+        </button>
+
       <button onClick={handleLike}> J'aime</button>
     </div>
   )
