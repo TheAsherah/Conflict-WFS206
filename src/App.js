@@ -1,27 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import ArticleList from './components/ArticleList';
-import RealTimeComments from './components/RealTimeComments';
-import commentsData from './data/comments.json';
+import React, { useEffect, useContext } from "react";
+import ArticleList from "./components/ArticleList";
+import RealTimeComments from "./components/RealTimeComments";
+import { CommentsContext } from "./context/CommentsContext"; // Import the context
 
 const App = () => {
-  const [comments, setComments] = useState(commentsData);
-
-  // Fonction pour ajouter un nouveau commentaire
-  const handleNewComment = (newComment) => {
-    setComments((prevComments) => [...prevComments, newComment]);
-  };
+  const { comments, addComment } = useContext(CommentsContext); // Use context for comments
 
   // Utilisation de useEffect pour écouter les changements de la liste des commentaires
   useEffect(() => {
-    console.log("La liste des commentaires a changé");
+    console.log("La liste des commentaires a changé :", comments);
   }, [comments]); // Ce useEffect se déclenche à chaque fois que 'comments' change.
 
   return (
     <div>
-      <ArticleList />
       <h1>Blog Interactif</h1>
-      {/* Le composant RealTimeComments reçoit la liste des commentaires et la fonction onNewComment */}
-      <RealTimeComments comments={comments} onNewComment={handleNewComment} />
+      <ArticleList />
+      {/* Le composant RealTimeComments utilise le contexte directement */}
+      <RealTimeComments onNewComment={addComment} />
     </div>
   );
 };

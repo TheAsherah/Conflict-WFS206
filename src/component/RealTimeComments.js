@@ -1,30 +1,34 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
+import { CommentsContext } from "../context/CommentsContext";
 
-const RealTimeComments = ({ comments = [], onNewComment }) => {
+const RealTimeComments = ({ onNewComment }) => {
+  const { comments, addComment } = useContext(CommentsContext); // Access global state and updater
   const [realTimeComments, setRealTimeComments] = useState(comments);
 
-  // Utilisation de useCallback pour garantir une fonction stable
+  // Function to add a new comment
   const addNewComment = useCallback(() => {
     const newComment = {
       id: realTimeComments.length + 1,
-      articleId: Math.ceil(Math.random() * 2), // Id aléatoire pour l'article
-      name: `User ${realTimeComments.length + 1}`, // Utilisation correcte de la chaîne interpolée
+      articleId: Math.ceil(Math.random() * 2), // Random article ID
+      name: `User ${realTimeComments.length + 1}`, // Dynamic user name
       comment: "Ceci est un nouveau commentaire ajouté en temps réel.",
-      date: new Date().toISOString(), // Date ISO pour plus de clarté
+      date: new Date().toISOString(), // ISO formatted date
     };
 
-    setRealTimeComments((prevComments) => [...prevComments, newComment]);
+    setRealTimeComments((prevComments) => [...prevComments, newComment]); // Update local state
+    addComment(newComment); // Update global state using context
     if (onNewComment) {
-      onNewComment(newComment); // Notifie le parent uniquement si la fonction existe
+      onNewComment(newComment); // Notify parent component if callback exists
     }
-  }, [realTimeComments, onNewComment]); // Dépendances nécessaires
+  }, [realTimeComments, addComment, onNewComment]);
 
+  // Effect to simulate real-time comment addition
   useEffect(() => {
     const intervalId = setInterval(() => {
-      addNewComment(); // Ajout automatique toutes les 5 secondes
+      addNewComment(); // Add a new comment every 5 seconds
     }, 5000);
 
-    return () => clearInterval(intervalId); // Nettoyage à la fin
+    return () => clearInterval(intervalId); // Cleanup interval on unmount
   }, [addNewComment]);
 
   return (
@@ -33,7 +37,8 @@ const RealTimeComments = ({ comments = [], onNewComment }) => {
       <ul>
         {realTimeComments.map((comment) => (
           <li key={comment.id}>
-            <strong>{comment.name}</strong>: {comment.comment} <em>({new Date(comment.date).toLocaleString()})</em>
+            <strong>{comment.name}</strong>: {comment.comment}{" "}
+            <em>({new Date(comment.date).toLocaleString()})</em>
           </li>
         ))}
       </ul>
