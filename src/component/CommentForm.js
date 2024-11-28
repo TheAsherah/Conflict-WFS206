@@ -6,6 +6,9 @@ function CommentForm() {
     function handleRéinitialiser(){
         setCommentaire('');
         setNom("");
+    } 
+    function handlecomment(){
+        
     }
   return (
     <div>
@@ -31,7 +34,7 @@ function CommentForm() {
                     {commentaire}
                 </textarea>
             </div>
-            <button type="submit">
+            <button type="submit" onClick={handlecomment}>
                 Envoyer le commentaire
             </button>
             <button onClick={handleRéinitialiser}>
