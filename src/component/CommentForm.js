@@ -5,7 +5,7 @@ function CommentForm() {
     const [nom,setNom] = useState('')
     function handleRéinitialiser(){
         setCommentaire('');
-        setNom('');
+        setNom("");
     }
   return (
     <div>
