@@ -1,0 +1,56 @@
+/* Conteneur principal pour la liste de commentaires */
+.comment-list-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Style de chaque commentaire dans la liste */
+.comment-item {
+  padding: 12px;
+  margin: 10px 0;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Style spécifique pour un commentaire "nouveau" */
+.new-comment {
+  background-color: #d4edda;
+  border-left: 4px solid #28a745;
+  padding: 10px;
+  transition: background-color 1s ease-in-out;
+}
+
+/* Effet de survol sur chaque commentaire */
+.comment-item:hover {
+  transform: scale(1.02);
+  background-color: #f8f8f8;
+}
+
+/* Style pour le nom de l'auteur du commentaire */
+.comment-item strong {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style pour le texte du commentaire */
+.comment-item p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+}
+
+/* Style pour la liste elle-même */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
