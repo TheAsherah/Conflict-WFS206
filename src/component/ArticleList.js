@@ -1,4 +1,3 @@
-// src/components/ArticleList.js
 import React, { useState, useEffect } from 'react';
 import ItemArticle from './ItemArticle';
 
@@ -7,7 +6,6 @@ const ArticleList = () => {
   const [sortOrder, setSortOrder] = useState('desc'); // "desc" for descending, "asc" for ascending
   const [comments, setComments] = useState({}); // Object to store comments for each article
 
-  // Function to load articles
   const fetchArticles = () => {
     fetch('/data/articles.json') // Load articles from the JSON file
       .then((response) => {
@@ -28,27 +26,33 @@ const ArticleList = () => {
     fetchArticles(); // Call the function to load articles on component mount
   }, []);
 
-  // Function to sort articles by date
   const sortArticles = () => {
     const sorted = [...articles].sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
-
       return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     });
-
-    setArticles(sorted); // Update articles with sorted data
+    setArticles(sorted);
   };
 
-  // Toggle the sorting order between ascending and descending
   const toggleSortOrder = () => {
     setSortOrder((prevOrder) => (prevOrder === 'asc' ? 'desc' : 'asc'));
   };
 
-  // Re-sort articles whenever the sort order changes
   useEffect(() => {
     sortArticles();
   }, [sortOrder]);
+
+
+  // Handle incrementing the like count for an article
+  const handleLike = (articleId) => {
+    const updatedArticles = articles.map((article) => {
+      if (article.id === articleId) {
+        return { ...article, likes: article.likes + 1 }; // Increment likes
+      }
+      return article;
+    });
+    setArticles(updatedArticles); // Update the articles state with the new like count
 
   // Function to handle comment submission
   const handleCommentSubmit = (articleId, comment) => {
@@ -57,13 +61,16 @@ const ArticleList = () => {
       ...prevComments,
       [articleId]: [...(prevComments[articleId] || []), comment],
     }));
+
   };
 
   return (
     <div>
       <h1>Liste des Articles</h1>
       <ul>
-        {articles.map((article) => (
+        {articles.map((article) => 
+          <ItemArticle key={article.id} article={article} onLike={handleLike} />
+
           <li key={article.id}>
             <ItemArticle article={article} />
             <div>
@@ -79,6 +86,7 @@ const ArticleList = () => {
               />
             </div>
           </li>
+
         ))}
       </ul>
       <button onClick={toggleSortOrder}>
