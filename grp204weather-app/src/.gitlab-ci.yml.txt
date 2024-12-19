@@ -1,0 +1,15 @@
+stages:
+  - sonarcloud
+
+sonarcloud_scan:
+  image: node:16
+  stage: sonarcloud
+  variables:
+    SONAR_TOKEN: $SONAR_TOKEN
+  script:
+    - npm install
+    - npx sonar-scanner \
+        -Dsonar.projectKey=TheAsherah_goToCode \
+        -Dsonar.organization=theasherah \
+        -Dsonar.host.url=https://sonarcloud.io \
+        -Dsonar.login=$SONAR_TOKEN

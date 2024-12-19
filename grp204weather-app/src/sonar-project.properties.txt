@@ -1,0 +1,10 @@
+sonar.projectKey=TheAsherah_goToCode
+sonar.organization=theasherah
+sonar.host.url=https://sonarcloud.io
+sonar.sources=src
+sonar.login=your-sonar-token
+
+
+
+
+e68a06e77a83351396e48fd3f84a11ffc1a3a43e
