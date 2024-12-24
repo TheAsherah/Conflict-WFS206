@@ -1,0 +1,5 @@
+sonar.projectKey=theasherah
+sonar.organization=theasherah
+sonar.host.url=https://sonarcloud.io
+sonar.sources=src
+sonar.login=c7f9e344500f457ccc0a63d3a147ab8416210280
