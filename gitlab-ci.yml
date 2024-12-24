@@ -9,7 +9,7 @@ sonarcloud_scan:
   script:
     - npm install
     - npx sonar-scanner \
-        -Dsonar.projectKey=theasherah \
+        -Dsonar.projectKey=TheAsherah_goToCode \
         -Dsonar.organization=theasherah \
         -Dsonar.host.url=https://sonarcloud.io \
         -Dsonar.login=$SONAR_TOKEN
